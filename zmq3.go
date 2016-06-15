@@ -51,6 +51,7 @@ var (
 	ErrorContextClosed = errors.New("Context is closed")
 	ErrorSocketClosed  = errors.New("Socket is closed")
 	ErrorNoEvent       = errors.New("Not an event")
+	ErrorNoSocket      = errors.New("No such socket")
 )
 
 func init() {
@@ -474,6 +475,14 @@ func (soc *Socket) Close() error {
 		soc.ctx = nil
 	}
 	return soc.err
+}
+
+// Return the context associated with a socket
+func (soc *Socket) Context() (*Context, error) {
+	if !soc.opened {
+		return nil, ErrorSocketClosed
+	}
+	return soc.ctx, nil
 }
 
 /*

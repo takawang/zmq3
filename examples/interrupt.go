@@ -31,6 +31,7 @@ func main() {
 LOOP:
 	for {
 		client.Send("HELLO", 0)
+		fmt.Println("Sent: HELLO")
 		reply, err := client.Recv(0)
 		if err != nil {
 			if zmq.AsErrno(err) == zmq.Errno(syscall.EINTR) {
@@ -38,12 +39,12 @@ LOOP:
 				log.Println("Client Recv:", err)
 				break
 			} else {
-				// some error occured
+				// some error occurred
 				log.Panicln(err)
 			}
 		}
 
-		fmt.Println("Client:", reply)
+		fmt.Println("Received:", reply)
 		time.Sleep(time.Second)
 
 		select {
